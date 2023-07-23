@@ -1,0 +1,111 @@
+{% extends "blog/base.html" %} {% load static %}
+<!DOCTYPE html>
+
+    {% block content %}
+
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-sm-3 mobile-hidden">
+          <div class="main-block">
+            <div
+              class="coverPicture"
+              style="background: url('{{ user.profile.bgimage.url }}');"
+            ></div>
+            <div
+              class="profilePicture"
+              style="background: url('{{ user.profile.image.url }}');"
+            ></div>
+            <div class="FullName text-center fs-18 ProjectColor">
+              {{ user }}
+            </div>
+            <div class="row statistic text-center fs-16 p-3">
+              <div class="col">
+                <p>Friends</p>
+                <br />
+                <p>{{ profile.get_friends_no }}</p>
+              </div>
+              <div class="col border-left">
+                <p>Posts</p>
+                <br />
+                <p>{{ pos }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 mobile-hidden">
+          {% if post_added %}
+          <div class="ui green message">Post added</div>
+          {% endif %}
+          <div
+            style="
+              background-color: white;
+              padding-bottom: 7%;
+              margin-bottom: 3%;
+            "
+          >
+            <form method="POST" action="" enctype="multipart/form-data" >
+              {% csrf_token %} {{p_form.content}} {{ p_form.post_image }}
+
+              <hr />
+              <div class="action p-2 pr-3">
+                <button
+                  name="submit_p_form"
+                  type="submit"
+                  class="float-r p-2 fs-16 post"
+                >
+                  save
+                </button>
+              </div>
+            </form>
+            
+          </div>
+
+          {% include 'blog/post-list.html' %}
+        </div>
+    {% if nofriend|length != 1  %}
+        <div class="col-3 mobile-hidden">
+          <div class="main-block">
+            <div class="row">
+              <div class="col pl-4">
+                <p class="fs-14 font-cairo font-weight-600">
+                  People you may know
+                </p>
+              </div>
+            </div>
+            
+            {% for friend in nofriend %} 
+            {% if friend.user.username != user.username %}
+            <hr class="m-1" />
+            <div class="row">
+              <div class="col-3">
+                <div class="pt-2 pl-2 d-inline-block">
+                  <div
+                    class="Profile-Picture"
+                    style="background: url('{{ friend.image.url }}');width: 40px;height: 40px;    border: 1.5px solid #8B54C7; "
+                  ></div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="UserName d-inline-block mt-3">
+                  <p>
+                    <a
+                      href="{% url 'profile-detail-view' friend.slug %}"
+                      class="font-weight-bold"
+                      >{{ friend.user }}</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {% endif %} 
+            {% endfor %}
+            {% else %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endblock content %}

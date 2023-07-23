@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% extends "blog/base.html" %} {% load static %} {% load crispy_forms_tags %} {% load widget_tweaks %}
+{% block content %}
+<div class="container mt-5" style="width: 75%">
+  <div class="row">
+    <div class="col">
+      <div class="main-block">
+        <div
+          class="coverPicture"
+          style="background: url('{{ user.profile.bgimage.url }}'); height:200px;"
+        ></div>
+        <div
+          class="profilePicture"
+          style="background: url('{{ user.profile.image.url }}');"
+        ></div>
+        <div class="FullName text-center fs-18 ProjectColor">
+          {{ user.username }}
+        </div>
+        <div class="row statistic text-center fs-16 p-3">
+          <div class="col">
+            <p>Friends</p>
+            <br />
+            <p>{{ profile.get_friends_no }}</p>
+          </div>
+          <div class="col border-left">
+            <p>Posts</p>
+            <br />
+            <p>{{ profile.get_posts_no }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="main-block">
+        <h1
+          style="
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 500;
+            margin: 0px;
+            color: #211b19;
+            text-transform: uppercase;
+            padding: 1%;
+            left: 50%;
+            top: 50%;
+          "
+        >
+          Change your profile image and background image
+        </h1>
+        <form
+        
+          action=""
+          method="POST"
+          enctype="multipart/form-data"
+          style="padding: 2%"
+        >
+          {% csrf_token %} 
+          
+          {{form.image}}
+          <br>
+          {{form.bgimage}}
+          <div style="text-align: -webkit-right">
+            <button type="submit" class="p-2 fs-16 post">save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% include 'blog/user-post-list.html' %} 
+  {% endblock content %}
+</div>
